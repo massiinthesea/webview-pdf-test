@@ -6,115 +6,121 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: sans-serif;
       margin: 0;
       padding: 1.5rem;
-      background: #f5f5f5;
+      background: #fafafa;
     }
     .container {
       max-width: 600px;
       margin: 0 auto;
       background: white;
       padding: 1.5rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      border: 1px solid #ddd;
+      border-radius: 8px;
     }
     h1 {
-      font-size: 1.4rem;
-      margin-bottom: 0.5rem;
-    }
-    p {
+      font-size: 1.2rem;
       margin-bottom: 1rem;
+      font-weight: bold;
     }
     button {
       display: block;
       width: 100%;
-      margin: 0.5rem 0;
-      padding: 0.75rem 1rem;
+      margin: 0.4rem 0;
+      padding: 0.6rem 1rem;
       font-size: 1rem;
-      border-radius: 999px;
-      border: none;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      background: #f0f0f0;
       cursor: pointer;
+      text-align: left;
     }
-    button.problem {
-      background: #e53e3e;
-      color: white;
+    button:hover {
+      background: #e5e5e5;
     }
-	button.problem2 {
-      background: #e53e3e;
-      color: white;
-    }
-    button.fixed {
-      background: #38a169;
-      color: white;
+    .section-title {
+      margin-top: 1.5rem;
+      font-weight: bold;
     }
     .log {
       margin-top: 1rem;
       font-family: monospace;
       font-size: 0.85rem;
-      background: #1a202c;
-      color: #e2e8f0;
+      background: #f0f0f0;
+      color: #333;
       padding: 0.75rem;
-      border-radius: 8px;
+      border-radius: 4px;
       max-height: 200px;
       overflow: auto;
       white-space: pre-wrap;
+      border: 1px solid #ccc;
     }
   </style>
 </head>
+
 <body>
   <div class="container">
-    <h1>Test d'ouverture PDF depuis WebView</h1>
-    <p>
-      Cette page expose deux boutons qui ouvrent le <strong>même PDF</strong> :
-    </p>
+    <h1>Test d'ouverture (PDF & Liens)</h1>
 
+    <div class="section-title">PDF</div>
 
-    <button class="problem" id="btn-problem">
-      🔴 Ouvrir le PDF (méthode problématique - window.open avec _blank)
-    </button>
+    <button id="pdf-blank">PDF → window.open(url, "_blank")</button>
+    <button id="pdf-system">PDF → window.open(url, "_system")</button>
+    <button id="pdf-location">PDF → window.location.href</button>
 
-    <button class="problem" id="btn-problem2">
-      🔴 Ouvrir le PDF (méthode problématique - location.href)
-    </button>
-	
-    <button class="fixed" id="btn-fixed">
-      🟢 Ouvrir le PDF (méthode corrigée - window.open avec _system)
-    </button>
+    <div class="section-title">Google.fr</div>
+
+    <button id="google-blank">Google → window.open("_blank")</button>
+    <button id="google-system">Google → window.open("_system")</button>
+    <button id="google-location">Google → window.location.href</button>
 
     <div class="log" id="log"></div>
   </div>
 
   <script>
-    const PDF_URL = 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
+    const PDF_URL = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
+    const GOOGLE_URL = "https://google.fr";
 
-    function log(message) {
-      var logDiv = document.getElementById('log');
-      var time = new Date().toISOString().split('T')[1].split('.')[0];
-      logDiv.textContent += '[' + time + '] ' + message + '\n';
-      logDiv.scrollTop = logDiv.scrollHeight;
-      console.log(message);
+    function log(msg) {
+      const div = document.getElementById("log");
+      const time = new Date().toISOString().split("T")[1].split(".")[0];
+      div.textContent += `[${time}] ${msg}\n`;
+      div.scrollTop = div.scrollHeight;
+      console.log(msg);
     }
 
-    document.addEventListener('DOMContentLoaded', function () {
-      var btnProblem = document.getElementById('btn-problem');
-      var btnProblem2 = document.getElementById('btn-problem2');
-	  var btnFixed = document.getElementById('btn-fixed');
-
-
-      btnProblem.addEventListener('click', function () {
-        log('Bouton PROBLÉMATIQUE cliqué → window.open(PDF_URL, "_blank")');
-        window.open(PDF_URL, '_blank');
+    document.addEventListener("DOMContentLoaded", () => {
+      // ---- PDF ----
+      document.getElementById("pdf-blank").addEventListener("click", () => {
+        log('PDF → window.open(PDF_URL, "_blank")');
+        window.open(PDF_URL, "_blank");
       });
 
-      btnProblem2.addEventListener('click', function () {
-        log('Bouton PROBLÉMATIQUE cliqué → window.location.href = PDF_URL');
+      document.getElementById("pdf-system").addEventListener("click", () => {
+        log('PDF → window.open(PDF_URL, "_system")');
+        window.open(PDF_URL, "_system");
+      });
+
+      document.getElementById("pdf-location").addEventListener("click", () => {
+        log("PDF → window.location.href = PDF_URL");
         window.location.href = PDF_URL;
       });
-	  
-	  btnFixed.addEventListener('click', function () {
-        log('Bouton CORRIGÉ cliqué → window.open(PDF_URL, "_system")');
-        window.open(PDF_URL, '_system');
+
+      // ---- GOOGLE ----
+      document.getElementById("google-blank").addEventListener("click", () => {
+        log('Google → window.open(GOOGLE_URL, "_blank")');
+        window.open(GOOGLE_URL, "_blank");
+      });
+
+      document.getElementById("google-system").addEventListener("click", () => {
+        log('Google → window.open(GOOGLE_URL, "_system")');
+        window.open(GOOGLE_URL, "_system");
+      });
+
+      document.getElementById("google-location").addEventListener("click", () => {
+        log("Google → window.location.href = GOOGLE_URL");
+        window.location.href = GOOGLE_URL;
       });
     });
   </script>
