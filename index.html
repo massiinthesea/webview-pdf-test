@@ -40,6 +40,10 @@
       background: #e53e3e;
       color: white;
     }
+	button.problem2 {
+      background: #e53e3e;
+      color: white;
+    }
     button.fixed {
       background: #38a169;
       color: white;
@@ -64,27 +68,25 @@
     <p>
       Cette page expose deux boutons qui ouvrent le <strong>même PDF</strong> :
     </p>
-    <ul>
-      <li><strong>Bouton problématique</strong> : utilise <code>window.open()</code></li>
-      <li><strong>Bouton corrigé</strong> : utilise <code>window.location.href</code></li>
-    </ul>
 
 
     <button class="problem" id="btn-problem">
-      🔴 Ouvrir le PDF (méthode problématique - window.open)
+      🔴 Ouvrir le PDF (méthode problématique - window.open avec _blank)
     </button>
 
+    <button class="problem" id="btn-problem2">
+      🔴 Ouvrir le PDF (méthode problématique - location.href)
+    </button>
+	
     <button class="fixed" id="btn-fixed">
-      🟢 Ouvrir le PDF (méthode corrigée - location.href)
+      🟢 Ouvrir le PDF (méthode corrigée - window.open avec _system)
     </button>
 
     <div class="log" id="log"></div>
   </div>
 
   <script>
-    //const PDF_URL = 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
-    const PDF_URL = 'https://www.google.com/';
-
+    const PDF_URL = 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
 
     function log(message) {
       var logDiv = document.getElementById('log');
@@ -96,19 +98,25 @@
 
     document.addEventListener('DOMContentLoaded', function () {
       var btnProblem = document.getElementById('btn-problem');
-      var btnFixed = document.getElementById('btn-fixed');
+      var btnProblem2 = document.getElementById('btn-problem2');
+	  var btnFixed = document.getElementById('btn-fixed');
+
 
       btnProblem.addEventListener('click', function () {
         log('Bouton PROBLÉMATIQUE cliqué → window.open(PDF_URL, "_blank")');
         window.open(PDF_URL, '_blank');
       });
 
-      btnFixed.addEventListener('click', function () {
-        log('Bouton CORRIGÉ cliqué → window.location.href = PDF_URL');
+      btnProblem2.addEventListener('click', function () {
+        log('Bouton PROBLÉMATIQUE cliqué → window.location.href = PDF_URL');
         window.location.href = PDF_URL;
+      });
+	  
+	  btnFixed.addEventListener('click', function () {
+        log('Bouton CORRIGÉ cliqué → window.open(PDF_URL, "_system")');
+        window.open(PDF_URL, '_system');
       });
     });
   </script>
 </body>
 </html>
-
