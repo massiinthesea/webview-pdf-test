@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Test ouverture PDF en WebView</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 1.5rem;
+      background: #f5f5f5;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+    h1 {
+      font-size: 1.4rem;
+      margin-bottom: 0.5rem;
+    }
+    p {
+      margin-bottom: 1rem;
+    }
+    button {
+      display: block;
+      width: 100%;
+      margin: 0.5rem 0;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+    }
+    button.problem {
+      background: #e53e3e;
+      color: white;
+    }
+    button.fixed {
+      background: #38a169;
+      color: white;
+    }
+    .log {
+      margin-top: 1rem;
+      font-family: monospace;
+      font-size: 0.85rem;
+      background: #1a202c;
+      color: #e2e8f0;
+      padding: 0.75rem;
+      border-radius: 8px;
+      max-height: 200px;
+      overflow: auto;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Test d'ouverture PDF depuis WebView</h1>
+    <p>
+      Cette page expose deux boutons qui ouvrent le <strong>même PDF</strong> :
+    </p>
+    <ul>
+      <li><strong>Bouton problématique</strong> : utilise <code>window.open()</code></li>
+      <li><strong>Bouton corrigé</strong> : utilise <code>window.location.href</code></li>
+    </ul>
+
+
+    <button class="problem" id="btn-problem">
+      🔴 Ouvrir le PDF (méthode problématique - window.open)
+    </button>
+
+    <button class="fixed" id="btn-fixed">
+      🟢 Ouvrir le PDF (méthode corrigée - location.href)
+    </button>
+
+    <div class="log" id="log"></div>
+  </div>
+
+  <script>
+    // 👉 Mets ici ton URL PDF si besoin
+    const PDF_URL = 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
+
+    function log(message) {
+      var logDiv = document.getElementById('log');
+      var time = new Date().toISOString().split('T')[1].split('.')[0];
+      logDiv.textContent += '[' + time + '] ' + message + '\n';
+      logDiv.scrollTop = logDiv.scrollHeight;
+      console.log(message);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      var btnProblem = document.getElementById('btn-problem');
+      var btnFixed = document.getElementById('btn-fixed');
+
+      btnProblem.addEventListener('click', function () {
+        log('Bouton PROBLÉMATIQUE cliqué → window.open(PDF_URL, "_blank")');
+        window.open(PDF_URL, '_blank');
+      });
+
+      btnFixed.addEventListener('click', function () {
+        log('Bouton CORRIGÉ cliqué → window.location.href = PDF_URL');
+        window.location.href = PDF_URL;
+      });
+    });
+  </script>
+</body>
+</html>
