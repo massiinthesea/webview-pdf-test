@@ -74,6 +74,12 @@
     <button id="google-blank">Google → window.open("_blank")</button>
     <button id="google-system">Google → window.open("_system")</button>
     <button id="google-location">Google → window.location.href</button>
+	
+	<div class="section-title">PDF avec Google viewer</div>
+
+	<button id="gview-blank">Google Viewer → window.open("_blank")</button>
+	<button id="gview-system">Google Viewer → window.open("_system")</button>
+	<button id="gview-location">Google Viewer → window.location.href</button>
 
     <div class="log" id="log"></div>
   </div>
@@ -81,6 +87,8 @@
   <script>
     const PDF_URL = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
     const GOOGLE_URL = "https://google.fr";
+	const GV_URL = "https://docs.google.com/gview?embedded=1&url=" + PDF_URL;
+
 
     function log(msg) {
       const div = document.getElementById("log");
@@ -122,6 +130,22 @@
         log("Google → window.location.href = GOOGLE_URL");
         window.location.href = GOOGLE_URL;
       });
+	  
+	  // ---- PDF avec Google viewer ----
+	  document.getElementById("gview-blank").addEventListener("click", () => {
+	    log('Google Viewer → window.open(GV_URL, "_blank")');
+	    window.open(GV_URL, "_blank");
+	  });
+
+	  document.getElementById("gview-system").addEventListener("click", () => {
+	    log('Google Viewer → window.open(GV_URL, "_system")');
+	    window.open(GV_URL, "_system");
+	  });
+	  
+	  document.getElementById("gview-location").addEventListener("click", () => {
+	    log("Google Viewer → window.location.href = GV_URL");
+	    window.location.href = GV_URL;
+	  });
     });
   </script>
 </body>
